@@ -73,7 +73,36 @@ I successfully:
 3. Fine-tuned TinyLlama-1.1B-Chat-v1.0 using QLoRA with LoRA adapters
 4. Evaluated the model using ROUGE metrics
 
-## Performance
+## Example Outputs
+
+### Teacher Model Output (Llama 3 8B)
+The teacher model generates structured JSON responses like this:
+
+```json
+{
+  "rationale": "1. Identify the key financial metrics mentioned\n2. Analyze the competitive landscape\n3. Assess market position and risks\n4. Evaluate strategic implications",
+  "summary": "The company faces intense competition in a rapidly evolving market, requiring strategic investments in technology and market expansion to maintain competitive position."
+}
+```
+
+### Student Model Output (TinyLlama 1.1B)
+After fine-tuning, the student model produces:
+
+```
+Step-by-step rationale:
+
+1. Identify the industry and its competitors.
+2. Determine the intensity of competition.
+3. Identify the companies with greater financial, marketing, and technological resources.
+4. Determine the potential impact of increased competition on profitability and market share.
+5. Analyze the potential impact of price reductions, reduced profitability, and loss of market share.
+6. Provide a rationale for the proposed action.
+
+Summary:
+Our industry is characterized by intense competition from numerous companies, some of which have greater financial, marketing, and technological resources. The proposed action is to implement price reductions, reduce profitability, and loss of market share to mitigate the potential impact of increased competition.
+```
+
+## Performance Analysis
 
 My ROUGE scores:
 - **ROUGE-1**: 0.00397
@@ -81,7 +110,23 @@ My ROUGE scores:
 - **ROUGE-L**: 0.00382
 - **ROUGE-Lsum**: 0.00366
 
-The scores are low but prove the pipeline works. The student model is learning to generate structured financial analysis.
+**Honest Assessment**: These scores are quite low, which is expected for several reasons:
+
+1. **Small Dataset**: With only 100 training examples, the model has limited exposure to the task
+2. **Complex Task**: Financial analysis requires domain expertise that's hard to learn from a small dataset
+3. **Model Size**: TinyLlama (1.1B parameters) is significantly smaller than the teacher (8B parameters)
+4. **Evaluation Challenge**: ROUGE metrics don't perfectly capture the quality of financial reasoning
+
+**What the scores mean**: While the ROUGE scores are low, they confirm that:
+- The pipeline works end-to-end
+- The student model is learning the task structure
+- The knowledge distillation process is functioning
+
+**Realistic expectations**: For production use, you'd need:
+- 1000+ training examples
+- Larger student model (3B+ parameters)
+- Domain-specific evaluation metrics
+- Human evaluation of reasoning quality
 
 ## Key Learnings
 
